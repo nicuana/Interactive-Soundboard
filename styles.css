@@ -81,3 +81,12 @@ h1{ margin:0; font-size:22px; }
 input[type="range"]{
   width: 220px;
 }
+
+#fx{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none; 
+}
