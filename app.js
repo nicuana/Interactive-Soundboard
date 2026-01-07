@@ -1,5 +1,20 @@
 const statusEl = document.getElementById("status");
 const volumeEl = document.getElementById("volume");
+const bgVideo = document.getElementById("bgVideo");
+
+if (bgVideo) {
+  bgVideo.muted = true; 
+  bgVideo.play().catch((err) => {
+    console.log("Video autoplay blocked:", err);
+    document.addEventListener(
+      "click",
+      () => {
+        bgVideo.play().catch(() => {});
+      },
+      { once: true }
+    );
+  });
+}
 
 const fxCanvas = document.getElementById("fx");
 const fxCtx = fxCanvas.getContext("2d");
@@ -10,41 +25,50 @@ function resizeFxCanvas() {
   fxCanvas.height = Math.floor(window.innerHeight * dpr);
   fxCanvas.style.width = window.innerWidth + "px";
   fxCanvas.style.height = window.innerHeight + "px";
-  fxCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  fxCtx.setTransform(dpr, 0, 0, dpr, 0, 0); 
 }
 window.addEventListener("resize", resizeFxCanvas);
 resizeFxCanvas();
 
 const particles = [];
+
 function spawnBurst(x, y) {
   for (let i = 0; i < 18; i++) {
     particles.push({
-      x, y,
+      x,
+      y,
       vx: (Math.random() - 0.5) * 6,
       vy: (Math.random() - 0.5) * 6,
       r: 4 + Math.random() * 10,
       life: 1,
-      hue: Math.random() * 360
+      hue: Math.random() * 360,
     });
   }
 }
+
 function animate() {
-  fxCtx.fillStyle = "rgba(0,0,0,0.18)";
-  fxCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+  fxCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
-    p.x += p.vx; p.y += p.vy;
-    p.vx *= 0.98; p.vy *= 0.98;
+
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vx *= 0.98;
+    p.vy *= 0.98;
     p.life -= 0.02;
 
-    if (p.life <= 0) { particles.splice(i, 1); continue; }
+    if (p.life <= 0) {
+      particles.splice(i, 1);
+      continue;
+    }
 
     fxCtx.beginPath();
     fxCtx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
     fxCtx.fillStyle = `hsla(${p.hue}, 85%, 60%, ${p.life})`;
     fxCtx.fill();
   }
+
   requestAnimationFrame(animate);
 }
 animate();
@@ -81,7 +105,8 @@ document.querySelectorAll(".pad").forEach((btn) => {
     audio.volume = Number(volumeEl.value);
     audio.currentTime = 0;
 
-    audio.play()
+    audio
+      .play()
       .then(() => console.log("Playing:", soundName))
       .catch((err) => {
         console.log("Audio play error:", err);
@@ -89,4 +114,6 @@ document.querySelectorAll(".pad").forEach((btn) => {
       });
   });
 });
+
+
 

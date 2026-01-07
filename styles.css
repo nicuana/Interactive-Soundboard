@@ -1,30 +1,41 @@
 :root{
   --bg:#0b1220;
-  --card:rgba(255,255,255,.08);
-  --text:#e8eefc;
-  --muted:rgba(232,238,252,.7);
-  --border:rgba(255,255,255,.14);
-  --shadow:0 12px 30px rgba(0,0,0,.35);
+  --card:rgba(20,26,40,.55);
+  --text:#f2f6ff;
+  --muted:rgba(242,246,255,.75);
+  --border:rgba(255,255,255,.18);
+  --shadow:0 12px 30px rgba(0,0,0,.45);
   --r:18px;
   --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
 }
 
 *{ box-sizing:border-box; }
+
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5); 
+  z-index: 0;
+  pointer-events: none;
+}
+
 body{
   margin:0;
   min-height:100vh;
   font-family:var(--font);
   color:var(--text);
-  background:
-    radial-gradient(1200px 800px at 20% 10%, rgba(122,162,255,.18), transparent 55%),
-    radial-gradient(1000px 700px at 80% 60%, rgba(255,122,200,.10), transparent 60%),
-    var(--bg);
+  background: transparent;
   display:grid;
   place-items:center;
   padding:24px;
 }
 
-.app{ width:min(900px, 100%); }
+.app{
+  position: relative;
+  z-index: 2;
+  width:min(900px, 100%);
+}
 
 .topbar{
   margin-bottom:16px;
@@ -41,12 +52,12 @@ h1{ margin:0; font-size:22px; }
   border-radius:var(--r);
   padding:14px;
   box-shadow:var(--shadow);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
 }
 
 .pad{
   border:1px solid var(--border);
-  background:rgba(255,255,255,.06);
+  background:rgba(255,255,255,.08);
   color:var(--text);
   border-radius:16px;
   padding:18px 12px;
@@ -55,7 +66,7 @@ h1{ margin:0; font-size:22px; }
   min-height:64px;
 }
 .pad:hover{ transform: translateY(-1px); }
-.pad:active{ transform: translateY(0px) scale(0.98); }
+.pad:active{ transform: translateY(0) scale(0.98); }
 
 .panel{
   margin-top:14px;
@@ -64,6 +75,7 @@ h1{ margin:0; font-size:22px; }
   border-radius:var(--r);
   padding:14px;
   box-shadow:var(--shadow);
+  backdrop-filter: blur(14px);
 }
 
 .row{
@@ -74,19 +86,30 @@ h1{ margin:0; font-size:22px; }
   padding:10px 12px;
   border-radius:14px;
   border:1px solid var(--border);
-  background:rgba(0,0,0,.10);
+  background:rgba(0,0,0,.25);
   margin-top:10px;
 }
 
 input[type="range"]{
-  width: 220px;
+  width:220px;
 }
 
 #fx{
   position: fixed;
   inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#bgVideo{
+  position: fixed;
+  inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
   z-index: -1;
-  pointer-events: none; 
+  filter: brightness(0.85);
 }
+
+
+
